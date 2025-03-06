@@ -1,11 +1,11 @@
 package saferoute.authentication.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import saferoute.authentication.enums.EUserRole;
+import saferoute.authentication.enums.EUserStatus;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -13,24 +13,44 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "users")
 public class User {
+
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true, updatable = false)
+    private UUID uuid = UUID.randomUUID();
+
     @Column(nullable = false, length = 100)
-    private String name;
-    @Column(nullable = false, unique = true, length = 150)
+    private String firstName;
+
+    @Column(nullable = false, length = 100)
+    private String lastName;
+
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
+
+    @Column(nullable = false, unique = true, length = 20)
+    private String phone;
+
     @Column(nullable = false)
-    private String password;
+    private String passwordHash;
+
+    @Column(nullable = false, length = 255)
+    private String photoUrl;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    private String role = "USER";
-    @Column(name = "created_at", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date createdAt = new java.util.Date();
+    private EUserRole role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private EUserStatus status = EUserStatus.ACTIVE;
+
+    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime updatedDate = LocalDateTime.now();
+    private LocalDateTime lastLoginDate;
 }
-
-
-
-
