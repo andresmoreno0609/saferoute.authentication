@@ -2,11 +2,9 @@ package saferoute.authentication.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import saferoute.authentication.enums.EUserRole;
 import saferoute.authentication.enums.EUserStatus;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -14,43 +12,39 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "users")
+@Table(name = "users", schema = "auth")
+
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, updatable = false)
-    private UUID uuid = UUID.randomUUID();
-
     @Column(nullable = false, length = 100)
-    private String firstName;
-
-    @Column(nullable = false, length = 100)
-    private String lastName;
+    private String name;
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(length = 20, unique = true)
     private String phone;
 
-    @Column(nullable = false)
-    private String passwordHash;
-
     @Column(nullable = false, length = 255)
-    private String photoUrl;
+    private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private EUserRole role;
+    @Column(name = "photo_url", length = 255)
+    private String photoUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EUserStatus status = EUserStatus.ACTIVE;
 
+    @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
-    private LocalDateTime updatedDate = LocalDateTime.now();
+
+    @Column(name = "approval_date")
+    private LocalDateTime approvalDate;
+
+    @Column(name = "last_login_date")
     private LocalDateTime lastLoginDate;
 }

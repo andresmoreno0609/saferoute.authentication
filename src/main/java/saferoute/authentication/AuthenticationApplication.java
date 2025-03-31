@@ -22,7 +22,7 @@ public class AuthenticationApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		try (Connection connection = dataSource.getConnection()) {
-			System.out.println("Conexión exitosa con Supabase!");
+			System.out.println("Conexión exitosa!");
 		} catch (Exception e) {
 			System.err.println("Error de conexión: " + e.getMessage());
 		}
